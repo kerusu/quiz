@@ -1,8 +1,8 @@
 package by.kerusu.quiz;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -13,7 +13,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends FragmentActivity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -25,6 +25,11 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         ParseAnalytics.trackAppOpened(getIntent());
+
+        if (ParseUser.getCurrentUser() != null) {
+            onSignedIn();
+            return;
+        }
 
         username = (EditText) findViewById(R.id.user_name);
         password = (EditText) findViewById(R.id.password);
@@ -47,6 +52,7 @@ public class LoginActivity extends Activity {
                         signUp(username, password);
                     } else {
                         Log.w(TAG, "Got error for a second try while logging in");
+                        Information.show(LoginActivity.this, R.string.error_username_already_taken);
                     }
                 } else {
                     Log.d(TAG, "User signed up");
@@ -78,12 +84,15 @@ public class LoginActivity extends Activity {
     private void onSignUpFiledWithError(ParseException e) {
         if (e.getCode() == ParseCodes.USERNAME_ALREADY_TAKEN) {
             // user name already taken
+            Information.show(LoginActivity.this, R.string.error_username_already_taken);
         } else {
             // show generic error
+            Information.show(LoginActivity.this, R.string.error_username_already_taken);
         }
     }
 
     private void onSignedIn() {
         startActivity(new Intent(this, QuizListActivity.class));
+        finish();
     }
 }

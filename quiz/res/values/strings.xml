@@ -6,5 +6,11 @@
     <string name="user_name">Username</string>
     <string name="password">Password</string>
     <string name="signinsignup">Sign In / Sign Up</string>
+    <string name="error_username_already_taken">User name was already taken. Please choose another username or enter correct password for account.</string>
+    <string name="logout">Logout</string>
+    <string name="default_username">Not aswered (Click to answer)</string>
+
+    <color name="default_username_color">#ff0</color>
+    <color name="username_color">#0f0</color>
 
 </resources>
