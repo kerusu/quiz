@@ -1,11 +1,11 @@
 package by.kerusu.quiz;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RemoteViews.ActionException;
 
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
@@ -13,7 +13,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
-public class LoginActivity extends  {
+public class LoginActivity extends Activity {
 
     private static final String TAG = LoginActivity.class.getSimpleName();
 
@@ -41,16 +41,17 @@ public class LoginActivity extends  {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                if (firstTry) {
-                    if (user == null) {
+                if (user == null) {
+                    if (firstTry) {
                         Log.d(TAG, "Trying to sign up a new user as sign in failed");
                         signUp(username, password);
                     } else {
-                        Log.d(TAG, "User signed up");
-                        Log.d(TAG, "User = " + String.valueOf(ParseUser.getCurrentUser()));
+                        Log.w(TAG, "Got error for a second try while logging in");
                     }
                 } else {
-                    Log.w(TAG, "Got error for a second try while logging in");
+                    Log.d(TAG, "User signed up");
+                    Log.d(TAG, "User = " + String.valueOf(ParseUser.getCurrentUser()));
+                    onSignedIn();
                 }
             }
         });
@@ -80,5 +81,9 @@ public class LoginActivity extends  {
         } else {
             // show generic error
         }
+    }
+
+    private void onSignedIn() {
+        startActivity(new Intent(this, QuizListActivity.class));
     }
 }
