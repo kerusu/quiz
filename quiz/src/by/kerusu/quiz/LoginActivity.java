@@ -3,6 +3,7 @@ package by.kerusu.quiz;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -57,7 +58,16 @@ public class LoginActivity extends FragmentActivity {
     }
 
     private void onSignInSignUpClicked() {
-        signIn(username.getText().toString(), password.getText().toString(), true);
+
+        String username = this.username.getText().toString();
+        String password = this.password.getText().toString();
+
+        if (TextUtils.isEmpty(username.trim()) || TextUtils.isEmpty(password.trim())) {
+            Information.show(this, R.string.please_enter_username_and_password);
+            return;
+        }
+
+        signIn(username, password, true);
     }
 
     private void signIn(final String username, final String password, final boolean firstTry) {
