@@ -187,7 +187,7 @@ public class QuizAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private boolean allDataSet() {
+    public boolean allDataSet() {
         return actors != null && pictures != null && answers != null;
     }
 

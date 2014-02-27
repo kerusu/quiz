@@ -122,6 +122,7 @@ public class QuizListActivity extends ActionBarActivity {
     private void startDataLoading() {
         ParseQuery<ParseObject> query;
         query = ParseQuery.getQuery("Actor");
+        query.orderByAscending("name");
         query.setCachePolicy(CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -149,21 +150,32 @@ public class QuizListActivity extends ActionBarActivity {
                 onPicturesLoaded(objects);
             }
         });
+
+        ProgressFragment.show(this, R.string.loading_data);
     }
 
     private void onActorsLoaded(List<ParseObject> newActors) {
         actors = newActors;
         quizListViewAdapter.setActors(newActors);
+        hideProgressFragmentIfNeeded();
     }
 
     private void onAnswersLoaded(List<ParseObject> newAnswers) {
         answers = newAnswers;
         quizListViewAdapter.setAnswers(newAnswers);
+        hideProgressFragmentIfNeeded();
     }
 
     private void onPicturesLoaded(List<ParseObject> newPictures) {
         pictures = newPictures;
         quizListViewAdapter.setPictures(newPictures);
+        hideProgressFragmentIfNeeded();
+    }
+
+    private void hideProgressFragmentIfNeeded() {
+        if (quizListViewAdapter != null && quizListViewAdapter.allDataSet()) {
+            ProgressFragment.dismiss(this);
+        }
     }
 
     private void onPictureSelected(final int position) {
@@ -218,6 +230,8 @@ public class QuizListActivity extends ActionBarActivity {
             }
         }
 
+        ProgressFragment.show(this, R.string.saving_your_answer);
+
         if (currentAnswer == null) {
 
             if (user == null) {
@@ -233,7 +247,11 @@ public class QuizListActivity extends ActionBarActivity {
             newAnswer.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
+
+                    ProgressFragment.dismiss(QuizListActivity.this);
+
                     if (e != null) {
+                        Information.show(QuizListActivity.this, String.valueOf(e.getMessage()));
                         return;
                     }
                     if (answers == null || quizListViewAdapter == null) {
@@ -250,9 +268,14 @@ public class QuizListActivity extends ActionBarActivity {
             newAnswer.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
+
+                    ProgressFragment.dismiss(QuizListActivity.this);
+
                     if (e != null) {
+                        Information.show(QuizListActivity.this, String.valueOf(e.getMessage()));
                         return;
                     }
+
                     if (answers == null || quizListViewAdapter == null) {
                         return;
                     }
@@ -289,5 +312,7 @@ public class QuizListActivity extends ActionBarActivity {
             }
             activeDialog = null;
         }
+
+        ProgressFragment.dismiss(this);
     }
 }

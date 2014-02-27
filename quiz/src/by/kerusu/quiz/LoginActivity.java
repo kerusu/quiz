@@ -67,6 +67,8 @@ public class LoginActivity extends FragmentActivity {
             return;
         }
 
+        ProgressFragment.show(this, R.string.sign_in);
+
         signIn(username, password, true);
     }
 
@@ -81,10 +83,12 @@ public class LoginActivity extends FragmentActivity {
                     } else {
                         Log.w(TAG, "Got error for a second try while logging in");
                         Information.show(LoginActivity.this, R.string.error_username_already_taken);
+                        ProgressFragment.dismiss(LoginActivity.this);
                     }
                 } else {
                     Log.d(TAG, "User signed up");
                     Log.d(TAG, "User = " + String.valueOf(ParseUser.getCurrentUser()));
+                    ProgressFragment.dismiss(LoginActivity.this);
                     onSignedIn();
                 }
             }
@@ -103,6 +107,7 @@ public class LoginActivity extends FragmentActivity {
                 if (e == null) {
                     signIn(username, password, false);
                 } else {
+                    ProgressFragment.dismiss(LoginActivity.this);
                     onSignUpFiledWithError(e);
                 }
             }
