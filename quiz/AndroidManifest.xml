@@ -13,7 +13,7 @@
 
     <application
         android:name="by.kerusu.quiz.QuizApplication"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/appicon"
         android:label="@string/app_name" >
         <activity
             android:name="by.kerusu.quiz.LoginActivity"
@@ -27,16 +27,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="by.kerusu.quiz.old.QuizListActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light" >
-        </activity>
-        <activity
             android:name="by.kerusu.quiz.QuizListActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light" >
+            android:theme="@style/Theme.AppCompat.Light"
+            android:windowSoftInputMode="adjustPan" >
         </activity>
     </application>
 

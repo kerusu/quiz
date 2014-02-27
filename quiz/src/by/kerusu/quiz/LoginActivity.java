@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
@@ -37,9 +40,24 @@ public class LoginActivity extends FragmentActivity {
         findViewById(R.id.signinsignup).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn(username.getText().toString(), password.getText().toString(), true);
+                onSignInSignUpClicked();
             }
         });
+
+        password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (EditorInfo.IME_ACTION_DONE == actionId) {
+                    onSignInSignUpClicked();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void onSignInSignUpClicked() {
+        signIn(username.getText().toString(), password.getText().toString(), true);
     }
 
     private void signIn(final String username, final String password, final boolean firstTry) {

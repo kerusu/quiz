@@ -9,13 +9,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
+import by.kerusu.quiz.QuizAdapter.FilterMode;
 
 import com.parse.FindCallback;
 import com.parse.ParseACL;
@@ -67,6 +72,34 @@ public class QuizListActivity extends ActionBarActivity {
         });
 
         startDataLoading();
+
+        SpinnerAdapter mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.action_list,
+                android.R.layout.simple_spinner_dropdown_item);
+
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSupportActionBar().setListNavigationCallbacks(mSpinnerAdapter, new OnNavigationListener() {
+            @Override
+            public boolean onNavigationItemSelected(int position, long id) {
+
+                if (quizListViewAdapter != null) {
+                    switch (position) {
+                    case 0:
+                        quizListViewAdapter.applyFilterMode(FilterMode.None);
+                        break;
+                    case 1:
+                        quizListViewAdapter.applyFilterMode(FilterMode.Answered);
+                        break;
+                    case 2:
+                        quizListViewAdapter.applyFilterMode(FilterMode.NotAnswered);
+                        break;
+                    default:
+                        break;
+                    }
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override

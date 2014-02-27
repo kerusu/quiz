@@ -1,5 +1,6 @@
 package by.kerusu.quiz;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +18,16 @@ import android.widget.TextView;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class QuizAdapter extends BaseAdapter {
 
+    public enum FilterMode {
+        None, Answered, NotAnswered
+    }
+
+    private List<ParseObject> filteredPictures;
     private List<ParseObject> pictures;
     private List<ParseObject> answers;
     private List<ParseObject> actors;
@@ -28,8 +35,10 @@ public class QuizAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private int itemHeight;
 
-    private Map<String, String> pictureUrlByPictureId;
-    private Map<String, String> actorNameByPictureId;
+    private Map<String, String> pictureUrlByPictureId = new HashMap<String, String>();
+    private Map<String, String> actorNameByPictureId = new HashMap<String, String>();
+
+    private FilterMode filterMode = FilterMode.None;
 
     public QuizAdapter(Activity activity, int screenWidth) {
         super();
@@ -40,12 +49,12 @@ public class QuizAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return allDataSet() ? pictures.size() : 0;
+        return allDataSet() ? filteredPictures.size() : 0;
     }
 
     @Override
     public Object getItem(int position) {
-        return pictures.get(position);
+        return filteredPictures.get(position);
     }
 
     @Override
@@ -60,10 +69,10 @@ public class QuizAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.quiz_listview_item, parent, false);
 
             ViewHolder viewHolder = new ViewHolder();
-            viewHolder.view = convertView;
             viewHolder.icon = (ImageView) convertView.findViewById(android.R.id.icon);
             viewHolder.name = (TextView) convertView.findViewById(R.id.username);
             viewHolder.pictureLayout = convertView.findViewById(R.id.pictureLayout);
+            viewHolder.progressBar = convertView.findViewById(R.id.progressBar);
 
             convertView.setTag(viewHolder);
         }
@@ -81,8 +90,20 @@ public class QuizAdapter extends BaseAdapter {
         String iconUrl = pictureUrlByPictureId.get(pictureId);
 
         if (iconUrl != null && !iconUrl.equals(viewHolder.iconUrl)) {
+            viewHolder.progressBar.setVisibility(View.VISIBLE);
             viewHolder.iconUrl = iconUrl;
-            Picasso.with(context).load(iconUrl).into(viewHolder.icon);
+            Picasso.with(context).load(iconUrl).into(viewHolder.icon, new Callback() {
+                @Override
+                public void onSuccess() {
+                    viewHolder.progressBar.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onError() {
+                }
+            });
+        } else {
+            viewHolder.progressBar.setVisibility(View.GONE);
         }
 
         String username = actorNameByPictureId.get(pictureId);
@@ -96,7 +117,7 @@ public class QuizAdapter extends BaseAdapter {
             viewHolder.name.setText(username);
             viewHolder.name.setTextColor(context.getResources().getColor(R.color.username_color));
         } else {
-            AlphaAnimation alpha = new AlphaAnimation(1F, 1F);
+            AlphaAnimation alpha = new AlphaAnimation(0.87F, 0.87F);
             alpha.setDuration(0); // Make animation instant
             alpha.setFillAfter(true); // Tell it to persist after the
                                       // animation ends
@@ -134,6 +155,35 @@ public class QuizAdapter extends BaseAdapter {
             return;
         }
         rebuildMappings();
+        applyFilterMode(filterMode);
+        notifyDataSetChanged();
+    }
+
+    public void applyFilterMode(FilterMode filterMode) {
+        if (!allDataSet()) {
+            return;
+        }
+        filteredPictures = new ArrayList<ParseObject>();
+        for (ParseObject picture : pictures) {
+            switch (filterMode) {
+            case None:
+                filteredPictures.add(picture);
+                break;
+            case Answered:
+                if (actorNameByPictureId.containsKey(picture.getObjectId())) {
+                    filteredPictures.add(picture);
+                }
+                break;
+            case NotAnswered:
+                if (!actorNameByPictureId.containsKey(picture.getObjectId())) {
+                    filteredPictures.add(picture);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+
         notifyDataSetChanged();
     }
 
@@ -176,7 +226,7 @@ public class QuizAdapter extends BaseAdapter {
         String iconUrl;
         ImageView icon;
         TextView name;
-        View view;
         View pictureLayout;
+        View progressBar;
     }
 }

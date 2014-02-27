@@ -5,14 +5,20 @@
     <string name="app_name">Quiz</string>
     <string name="user_name">Username</string>
     <string name="password">Password</string>
-    <string name="signinsignup">Sign In / Sign Up</string>
+    <string name="signinsignup">Enter quiz</string>
     <string name="error_username_already_taken">User name was already taken. Please choose another username or enter correct password for account.</string>
     <string name="logout">Logout</string>
     <string name="default_username">Not aswered (Click to answer)</string>
     <string name="choose_actor_dialog_title">Who do you think it is?</string>
     <string name="cancel">Cancel</string>
-    
+
     <color name="default_username_color">#ff0</color>
     <color name="username_color">#0f0</color>
+
+    <string-array name="action_list">
+        <item>All Photos</item>
+        <item>Answered</item>
+        <item>Not Answered</item>
+    </string-array>
 
 </resources>
