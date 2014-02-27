@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
-    <FrameLayout
-        android:id="@+id/pictureLayout"
+    <com.parse.ParseImageView
+        android:id="@android:id/icon"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
-        <com.parse.ParseImageView
-            android:id="@android:id/icon"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" >
-        </com.parse.ParseImageView>
-    </FrameLayout>
+        android:layout_height="350dp"
+        android:scaleType="centerCrop" >
+    </com.parse.ParseImageView>
 
     <TextView
         android:id="@+id/username"
