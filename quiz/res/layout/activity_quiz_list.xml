@@ -7,4 +7,5 @@
     android:divider="@drawable/bottom_shadow"
     android:dividerHeight="8dp"
     android:footerDividersEnabled="true"
-    android:padding="8dp" />
+    android:padding="8dp"
+    android:scrollbarStyle="outsideOverlay" />

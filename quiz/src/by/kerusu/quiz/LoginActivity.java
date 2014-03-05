@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.crittercism.app.Crittercism;
 import com.parse.LogInCallback;
 import com.parse.ParseAnalytics;
 import com.parse.ParseException;
@@ -29,6 +30,7 @@ public class LoginActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         ParseAnalytics.trackAppOpened(getIntent());
+        Crittercism.initialize(getApplicationContext(), "5316d54e8633a41796000003");
 
         if (ParseUser.getCurrentUser() != null) {
             onSignedIn();
@@ -120,7 +122,7 @@ public class LoginActivity extends FragmentActivity {
             Information.show(LoginActivity.this, R.string.error_username_already_taken);
         } else {
             // show generic error
-            Information.show(LoginActivity.this, R.string.error_username_already_taken);
+            Information.show(LoginActivity.this, R.string.error_please_try_again_later);
         }
     }
 

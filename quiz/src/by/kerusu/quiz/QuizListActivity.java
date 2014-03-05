@@ -51,8 +51,6 @@ public class QuizListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_list);
 
-        ParseAnalytics.trackAppOpened(getIntent());
-
         user = ParseUser.getCurrentUser();
         if (user == null) {
             // we are not logged in
@@ -242,7 +240,13 @@ public class QuizListActivity extends ActionBarActivity {
             newAnswer.put("actorId", actorId);
             newAnswer.put("pictureId", pictureId);
             newAnswer.put("userId", user.getObjectId());
-            newAnswer.setACL(new ParseACL(user));
+
+            ParseACL parseACL = new ParseACL();
+            parseACL.setReadAccess(user, true);
+            parseACL.setWriteAccess(user, true);
+            parseACL.setPublicReadAccess(true);
+
+            newAnswer.setACL(parseACL);
 
             newAnswer.saveInBackground(new SaveCallback() {
                 @Override

@@ -7,5 +7,7 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/android-support-v7-appcompat"/>
 	<classpathentry kind="lib" path="libs/picasso-2.2.0.jar"/>
+	<classpathentry kind="lib" path="libs/crittercism_v4_4_0_sdkonly.jar"/>
+	<classpathentry kind="lib" path="libs/Parse-1.4.1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
