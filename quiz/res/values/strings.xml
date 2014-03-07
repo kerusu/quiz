@@ -14,10 +14,11 @@
     <string name="choose_actor_dialog_title">Who do you think it is?</string>
     <string name="cancel">Cancel</string>
     <string name="wait_a_sec">Feel our love &lt;3</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in">Signing in</string>
     <string name="loading_data">Loading data</string>
     <string name="saving_your_answer">Saving your answer</string>
-
+    <string name="show_complement">Say it!</string>
+    
     <color name="default_username_color">#FFBB33</color>
     <color name="username_color">#99CC00</color>
 
@@ -25,6 +26,26 @@
         <item>All Photos</item>
         <item>Answered</item>
         <item>Not Answered</item>
+    </string-array>
+    <string-array name="complement_list">
+        <item>You are so thoughtful in dealing with others.</item>
+        <item>We just love the way you multitask everything.</item>
+        <item>Your patience in dealing with others is what we admire the most in your personality.</item>
+        <item>You have an amazing sense of humor.</item>
+        <item>We like the way you handle people around you. And now we know why everyone admires you.</item>
+        <item>Simplicity is the ultimate sophistication, and you are a perfect example of it.</item>
+        <item>Will we ever be as polite as you are?</item>
+        <item>You are nicer to my friends than what we are.</item>
+        <item>You are a very smart girl.</item>
+        <item>You are just so charming.</item>
+        <item>We love the way you carry yourself... so enigmatic, so confident.</item>
+        <item>Oh my! What are we ever gonna do without you?</item>
+        <item>You make me proud.</item>
+        <item>You are so much fun to be with.</item>
+        <item>Thank you so so much, for being just the way you are.</item>
+        <item>You make us feel special.</item>
+        <item>We feel so comfortable around you.</item>
+        <item>When we are with you, it really doesn\'t matter where we are going. With you, it\'s always a good time.</item>
     </string-array>
 
 </resources>

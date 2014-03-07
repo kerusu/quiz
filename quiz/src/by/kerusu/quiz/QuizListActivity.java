@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 import by.kerusu.quiz.QuizAdapter.FilterMode;
 
 import com.parse.FindCallback;
@@ -46,6 +47,8 @@ public class QuizListActivity extends ActionBarActivity {
     private List<ParseObject> actors;
 
     private AlertDialog activeDialog;
+
+    private ComplementProvider complementProvider;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,8 @@ public class QuizListActivity extends ActionBarActivity {
                 return false;
             }
         });
+
+        complementProvider = new ComplementProvider(getApplicationContext());
     }
 
     @Override
@@ -114,7 +119,15 @@ public class QuizListActivity extends ActionBarActivity {
             finish();
             return true;
         }
+        if (R.id.show_complement == item.getItemId()) {
+            showComplement();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showComplement() {
+        Toast.makeText(getApplicationContext(), complementProvider.getRandomComplement(), Toast.LENGTH_LONG).show();
     }
 
     private void startDataLoading() {
@@ -141,6 +154,7 @@ public class QuizListActivity extends ActionBarActivity {
         });
 
         query = ParseQuery.getQuery("Picture");
+        query.orderByAscending("index");
         query.setCachePolicy(CachePolicy.NETWORK_ELSE_CACHE);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
@@ -256,13 +270,16 @@ public class QuizListActivity extends ActionBarActivity {
 
                     if (e != null) {
                         Information.show(QuizListActivity.this, String.valueOf(e.getMessage()));
+                        showRandomComplementIfNeeded();
                         return;
                     }
                     if (answers == null || quizListViewAdapter == null) {
+                        showRandomComplementIfNeeded();
                         return;
                     }
                     answers.add(newAnswer);
                     quizListViewAdapter.setAnswers(answers);
+                    showRandomComplementIfNeeded();
                 }
             });
 
@@ -277,17 +294,26 @@ public class QuizListActivity extends ActionBarActivity {
 
                     if (e != null) {
                         Information.show(QuizListActivity.this, String.valueOf(e.getMessage()));
+                        showRandomComplementIfNeeded();
                         return;
                     }
 
                     if (answers == null || quizListViewAdapter == null) {
+                        showRandomComplementIfNeeded();
                         return;
                     }
                     answers.remove(newAnswer);
                     answers.add(newAnswer);
                     quizListViewAdapter.setAnswers(answers);
+                    showRandomComplementIfNeeded();
                 }
             });
+        }
+    }
+
+    private void showRandomComplementIfNeeded() {
+        if (Math.random() < 0.25) {
+            showComplement();
         }
     }
 
