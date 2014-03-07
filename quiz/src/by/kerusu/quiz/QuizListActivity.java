@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.OnNavigationListener;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -230,7 +231,12 @@ public class QuizListActivity extends ActionBarActivity {
             return;
         }
 
-        String pictureId = pictures.get(pictureIndex).getObjectId();
+        // String pictureId = pictures.get(pictureIndex).getObjectId();
+        String pictureId = quizListViewAdapter.getPictureIdByIndex(pictureIndex);
+        if (TextUtils.isEmpty(pictureId)) {
+            return;
+        }
+
         String actorId = actors.get(actorIndex).getObjectId();
 
         ParseObject currentAnswer = null;
@@ -312,7 +318,7 @@ public class QuizListActivity extends ActionBarActivity {
     }
 
     private void showRandomComplementIfNeeded() {
-        if (Math.random() < 0.25) {
+        if (Math.random() < 0.5) {
             showComplement();
         }
     }

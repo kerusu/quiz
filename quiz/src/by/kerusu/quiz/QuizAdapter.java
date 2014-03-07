@@ -132,7 +132,7 @@ public class QuizAdapter extends BaseAdapter {
 
     @Override
     public boolean hasStableIds() {
-        return true;
+        return false;
     }
 
     public void setPictures(List<ParseObject> pictures) {
@@ -163,6 +163,7 @@ public class QuizAdapter extends BaseAdapter {
         if (!allDataSet()) {
             return;
         }
+        this.filterMode = filterMode;
         filteredPictures = new ArrayList<ParseObject>();
         for (ParseObject picture : pictures) {
             switch (filterMode) {
@@ -220,6 +221,13 @@ public class QuizAdapter extends BaseAdapter {
                 }
             }
         }
+    }
+
+    public String getPictureIdByIndex(int index) {
+        if (filteredPictures == null || index < 0 || index >= filteredPictures.size()) {
+            return "";
+        }
+        return filteredPictures.get(index).getObjectId();
     }
 
     private static final class ViewHolder {
